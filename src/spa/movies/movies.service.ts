@@ -1,7 +1,6 @@
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-import { data } from '@/spa/movies/mocks';
 import { MovieDetails, Movies } from '@/spa/movies/movies.type';
 
 const axiosMovie = axios.create({
@@ -36,7 +35,7 @@ export const useMovieList = (
         params: {
           api_key: process.env.NEXT_PUBLIC_API_MOVIES_API_KEY,
           sort_by: 'popularity.desc',
-          // query: params?.searchTerm ?? '',
+          query: params?.searchTerm ?? '',
         },
       }),
     { keepPreviousData: true, ...config }
@@ -46,7 +45,7 @@ export const useMovieList = (
 };
 
 export const useMovie = (
-  movieId: string,
+  movieId?: string,
   config: UseQueryOptions<
     AxiosResponse<MovieDetails>,
     AxiosError,
@@ -69,7 +68,7 @@ export const useMovie = (
   );
 
   return {
-    user: result.data,
     ...result,
+    data: result.data?.data,
   };
 };

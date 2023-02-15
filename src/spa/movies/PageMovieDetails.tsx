@@ -1,19 +1,73 @@
-import { Heading } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
+import { Badge, HStack, Heading, Image, Stack, Text } from '@chakra-ui/react';
+import dayjs from 'dayjs';
+import { BiTime } from 'react-icons/bi';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import { Icon } from '@/components/Icons';
 import { Page, PageContent, PageTopBar } from '@/spa/layout';
+import { IMAGE_PATH } from '@/spa/movies/PageMovies';
 import { useMovie } from '@/spa/movies/movies.service';
 
 const PageMovieDetails = () => {
-  const { data } = useMovie('505642');
   const navigate = useNavigate();
-  console.log(data);
+  const { id } = useParams();
+  const { data: movie } = useMovie(id);
+
   return (
     <Page isFocusMode>
       <PageTopBar showBack onBack={() => navigate(-1)}>
-        <Heading size="md">Movie details</Heading>
+        <HStack>
+          <Heading size="md">{movie?.title}</Heading>
+          <HStack>
+            {movie?.genres?.map((item) => (
+              <Badge
+                colorScheme="blue"
+                key={item.id}
+                borderRadius="full"
+                color="brand.700"
+                bg="brand.100"
+                size="sm"
+                fontWeight="500"
+              >
+                {item.name}
+              </Badge>
+            ))}
+          </HStack>
+        </HStack>
       </PageTopBar>
-      <PageContent>Page movie detail</PageContent>
+      <PageContent>
+        <Stack spacing={8} direction={{ base: 'column', md: 'row' }}>
+          <Image
+            src={`${IMAGE_PATH}${movie?.poster_path}`}
+            alt={movie?.title}
+            borderRadius="8px"
+          />
+          <Stack h="full" spacing={4} justifyContent="flex-start" minW="50%">
+            <HStack>
+              <Icon icon={BiTime} />
+              <Text color="gray.900">
+                {dayjs
+                  .duration(movie?.runtime ?? 0, 'minutes')
+                  .format('H[h]m[m]')}
+              </Text>
+            </HStack>
+            <Stack spacing={2}>
+              <Text color="gray.600" fontSize="sm" fontWeight="bold">
+                Release date
+              </Text>
+              <Text color="gray.900">
+                {dayjs(movie?.release_date).format('DD/MM/YYYY')}
+              </Text>
+            </Stack>
+            <Stack spacing={2}>
+              <Text color="gray.600" fontSize="sm" fontWeight="bold">
+                Synopsis
+              </Text>
+              <Text color="gray.900">{movie?.overview}</Text>
+            </Stack>
+          </Stack>
+        </Stack>
+      </PageContent>
     </Page>
   );
 };
