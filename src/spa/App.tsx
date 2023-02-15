@@ -14,11 +14,9 @@ import {
   PublicOnlyRouteGuard,
 } from '@/spa/router/guards';
 
+const MoviesRoutes = React.lazy(() => import('@/spa/movies/MoviesRoutes'));
 const AdminRoutes = React.lazy(() => import('@/spa/admin/AdminRoutes'));
 const AccountRoutes = React.lazy(() => import('@/spa/account/AccountRoutes'));
-const DashboardRoutes = React.lazy(
-  () => import('@/spa/dashboard/DashboardRoutes')
-);
 
 export const App = () => {
   return (
@@ -27,7 +25,7 @@ export const App = () => {
         <Layout>
           <Suspense fallback={<Loader />}>
             <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<Navigate to="/movies" replace />} />
 
               <Route
                 path="login"
@@ -56,10 +54,10 @@ export const App = () => {
               />
 
               <Route
-                path="dashboard/*"
+                path="movies/*"
                 element={
                   <AuthenticatedRouteGuard>
-                    <DashboardRoutes />
+                    <MoviesRoutes />
                   </AuthenticatedRouteGuard>
                 }
               />

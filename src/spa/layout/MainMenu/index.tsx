@@ -62,12 +62,13 @@ const MainMenuItem = ({ to, ...rest }: BoxProps & { to: string }) => {
 
 export const MainMenu = ({ ...rest }) => {
   const { t } = useTranslation(['layout']);
-  const { isAdmin } = useAccount();
+  const { isAdmin, account } = useAccount();
   return (
     <Stack direction="row" spacing="1" {...rest}>
       <MainMenuItem to="/dashboard">
         {t('layout:mainMenu.dashboard')}
       </MainMenuItem>
+      {!!account && <MainMenuItem to="/movies">Movies</MainMenuItem>}
       {isAdmin && (
         <MainMenuItem to="/admin">{t('layout:mainMenu.admin')}</MainMenuItem>
       )}
