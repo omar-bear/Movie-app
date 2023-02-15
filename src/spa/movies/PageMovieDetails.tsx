@@ -41,8 +41,15 @@ const PageMovieDetails = () => {
             src={`${IMAGE_PATH}${movie?.poster_path}`}
             alt={movie?.title}
             borderRadius="8px"
+            maxW={{ base: '300px', md: '50%' }}
+            alignSelf={{ base: 'center', md: 'flex-start' }}
           />
-          <Stack h="full" spacing={4} justifyContent="flex-start" minW="50%">
+          <Stack
+            h="full"
+            spacing={4}
+            justifyContent="flex-start"
+            maxW={{ base: 'full', md: '50%' }}
+          >
             <HStack>
               <Icon icon={BiTime} />
               <Text color="gray.900">
